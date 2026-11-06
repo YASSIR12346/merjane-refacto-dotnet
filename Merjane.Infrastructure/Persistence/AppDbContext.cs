@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Refacto.DotNet.Controllers.Entities;
+using Microsoft.EntityFrameworkCore;
+using Merjane.Domain.Entities;
 
-namespace Refacto.DotNet.Controllers.Database.Context
+namespace Merjane.Infrastructure.Persistence
 {
     public class AppDbContext : DbContext
     {
@@ -17,10 +17,9 @@ namespace Refacto.DotNet.Controllers.Database.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure many-to-many relationship between Order and Product
-            _ = modelBuilder.Entity<Order>()
-                .HasMany(o => o.Items)
-                .WithMany(); // Since Product doesn't have a collection for Order
+            // EF CORE MAPPINGS BELONG TO INFRASTRUCTURE, NOT DOMAIN ENTITIES.
+            modelBuilder.ApplyConfiguration(new Merjane.Infrastructure.Persistence.Configurations.OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new Merjane.Infrastructure.Persistence.Configurations.ProductConfiguration());
 
         }
 

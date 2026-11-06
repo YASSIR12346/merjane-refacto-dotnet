@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Refacto.DotNet.Controllers\Refacto.DotNet.Controllers.csproj" />
+    <ProjectReference Include="..\Merjane.Api\Merjane.Api.csproj" />
   </ItemGroup>
 
 </Project>

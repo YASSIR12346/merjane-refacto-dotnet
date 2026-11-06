@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Refacto.DotNet.Controllers.Database.Context;
-using Refacto.DotNet.Controllers.Entities;
+using Merjane.Infrastructure.Persistence;
+using Merjane.Domain.Entities;
 using Refacto.DotNet.Controllers.Services;
 
 namespace Refacto.Dotnet.Controllers.Tests.Controllers
@@ -78,12 +78,12 @@ namespace Refacto.Dotnet.Controllers.Tests.Controllers
         {
             return new List<Product>
             {
-                new Product { LeadTime = 15, Available = 30, Type = "NORMAL", Name = "USB Cable" },
-                new Product { LeadTime = 10, Available = 0, Type = "NORMAL", Name = "USB Dongle" },
-                new Product { LeadTime = 15, Available = 30, Type = "EXPIRABLE", Name = "Butter", ExpiryDate = DateTime.Now.AddDays(26) },
-                new Product { LeadTime = 90, Available = 6, Type = "EXPIRABLE", Name = "Milk", ExpiryDate = DateTime.Now.AddDays(-2) },
-                new Product { LeadTime = 15, Available = 30, Type = "SEASONAL", Name = "Watermelon", SeasonStartDate = DateTime.Now.AddDays(-2), SeasonEndDate = DateTime.Now.AddDays(58) },
-                new Product { LeadTime = 15, Available = 30, Type = "SEASONAL", Name = "Grapes", SeasonStartDate = DateTime.Now.AddDays(180), SeasonEndDate = DateTime.Now.AddDays(240) }
+                new Product(available: 30, leadTime: 15) { Type = "NORMAL", Name = "USB Cable" },
+                new Product(available: 0, leadTime: 10) { Type = "NORMAL", Name = "USB Dongle" },
+                new Product(available: 30, leadTime: 15) { Type = "EXPIRABLE", Name = "Butter", ExpiryDate = DateTime.Now.AddDays(26) },
+                new Product(available: 6, leadTime: 90) { Type = "EXPIRABLE", Name = "Milk", ExpiryDate = DateTime.Now.AddDays(-2) },
+                new Product(available: 30, leadTime: 15) { Type = "SEASONAL", Name = "Watermelon", SeasonStartDate = DateTime.Now.AddDays(-2), SeasonEndDate = DateTime.Now.AddDays(58) },
+                new Product(available: 30, leadTime: 15) { Type = "SEASONAL", Name = "Grapes", SeasonStartDate = DateTime.Now.AddDays(180), SeasonEndDate = DateTime.Now.AddDays(240) }
             };
         }
     }

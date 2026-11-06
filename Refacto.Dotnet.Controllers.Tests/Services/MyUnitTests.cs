@@ -1,37 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Merjane.Application.Abstractions;
 using Moq;
-using Moq.EntityFrameworkCore;
-using Refacto.DotNet.Controllers.Database.Context;
-using Refacto.DotNet.Controllers.Entities;
+using Merjane.Domain.Entities;
 using Refacto.DotNet.Controllers.Services;
-using Refacto.DotNet.Controllers.Services.Impl;
+using Merjane.Application.Products;
 
 namespace Refacto.DotNet.Controllers.Tests.Services
 {
     public class MyUnitTests
     {
         private readonly Mock<INotificationService> _mockNotificationService;
-        private readonly Mock<AppDbContext> _mockDbContext;
-        private readonly Mock<DbSet<Product>> _mockDbSet;
+        private readonly Mock<IOrderRepository> _mockOrders;
         private readonly ProductService _productService;
 
         public MyUnitTests()
         {
             _mockNotificationService = new Mock<INotificationService>();
-            _mockDbContext = new Mock<AppDbContext>();
-            _mockDbSet = new Mock<DbSet<Product>>();
-            _ = _mockDbContext.Setup(x => x.Products).ReturnsDbSet(Array.Empty<Product>());
-            _productService = new ProductService(_mockNotificationService.Object, _mockDbContext.Object);
+            _mockOrders = new Mock<IOrderRepository>();
+            _productService = new ProductService(_mockNotificationService.Object, _mockOrders.Object);
         }
 
         [Fact]
         public void Test()
         {
             // GIVEN
-            Product product = new()
+            Product product = new(available: 0, leadTime: 15)
             {
-                LeadTime = 15,
-                Available = 0,
                 Type = "NORMAL",
                 Name = "RJ45 Cable"
             };
@@ -42,7 +35,7 @@ namespace Refacto.DotNet.Controllers.Tests.Services
             // THEN
             Assert.Equal(0, product.Available);
             Assert.Equal(15, product.LeadTime);
-            _mockDbContext.Verify(ctx => ctx.SaveChanges(), Times.Once());
+            _mockOrders.Verify(ctx => ctx.SaveChanges(), Times.Once());
             _mockNotificationService.Verify(service => service.SendDelayNotification(product.LeadTime, product.Name), Times.Once());
         }
     }
